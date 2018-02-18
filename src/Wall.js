@@ -1,10 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const Wall = ({start, end}) => (
-  <path fill="#a8ceec" stroke="#a8ceec" strokeOpacity="1" strokeWidth="2" 
-        d={"M" + start.x + "," + start.y + "L" + end.x + "," + end.y} />
-);
+var OFFSET = 16;
+
+class Wall extends Component{
+  render() {
+    var start = this.props.start;
+    var end = this.props.end;
+    var length = Math.sqrt(Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2));
+    var deltaX = OFFSET * (end.y - start.y) / length;
+    var deltaY = OFFSET * (end.x - start.x) / length;
+    var point = [];
+
+    point.push({x: start.x - deltaX, y: start.y + deltaY});
+    point.push({x: start.x + deltaX, y: start.y - deltaY});
+    point.push({x: end.x + deltaX, y: end.y - deltaY});
+    point.push({x: end.x - deltaX, y: end.y + deltaY});
+
+    var d = "M" + point[3].x + "," + point[3].y;
+    for(var i=0; i<4; i++)
+    {
+      d += "L" + point[i].x + "," + point[i].y;
+    }
+
+    return <path fill="#a8ceec" stroke="#333333" strokeOpacity="1" strokeWidth="2"  
+                 strokeLinejoin="round" strokeLinecap="round" d={d} />
+  }
+}
 
 Wall.propTypes = {
   start: PropTypes.object.isRequired,
