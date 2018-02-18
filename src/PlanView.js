@@ -3,12 +3,6 @@ import React, { Component } from 'react';
 import WallList from './Wall';
 import Util from './Util';
 
-var Operation = 
-{
-  None: 0,
-  Wall: 1
-}
-
 class PlanView extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +13,6 @@ class PlanView extends Component {
     this.handleMouseUp = this.handleMouseUp.bind(this);
     
     this.state = {
-      operation: Operation.None,
       lastEvent: null,
       holding : false,
       walls : [],
@@ -35,11 +28,11 @@ class PlanView extends Component {
     if(!this.state.holding)
       return;
 
-    switch(this.state.operation)
+    switch(this.props.operation)
     {
-      case Operation.None:
+      case Util.Operation.None:
         this.renderViewBox(event); break;
-      case Operation.Wall:
+      case Util.Operation.Wall:
         this.renderWall(event); break;
       default:
     }
