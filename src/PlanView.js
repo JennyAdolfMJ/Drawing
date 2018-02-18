@@ -41,11 +41,22 @@ class PlanView extends Component {
         this.renderViewBox(event); break;
       case Operation.Wall:
         this.renderWall(event); break;
+      default:
     }
   }
 
   handleMouseUp(event) {
     this.setState({holding: false});
+  }
+
+  handleWheel(event) {
+    var viewBox = this.state.viewBox;
+    var factor = event.deltaY > 0 ? 0.01 : -0.01;
+
+    viewBox.w *= 1 + factor;
+    viewBox.h *= 1 + factor;
+
+    this.setState({viewBox: viewBox});
   }
 
   renderWall(event)
@@ -89,7 +100,8 @@ class PlanView extends Component {
     return (
       <div id="planviewdiv" onMouseDown={(event) => this.handleMouseDown(event)} 
            onMouseMove={(event) => this.handleMouseMove(event)} 
-           onMouseUp={(event) => this.handleMouseUp(event)}>
+           onMouseUp={(event) => this.handleMouseUp(event)}
+           onWheel={(event) => this.handleWheel(event)}>
         <svg id="planview" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox={this.getViewBox()}>
             <circle cx="100" cy="50" r="40" stroke="black" strokeWidth="2" fill="red" />
             <g strokeWidth="1">

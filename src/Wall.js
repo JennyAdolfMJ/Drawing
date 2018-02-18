@@ -23,7 +23,7 @@ class Wall extends Component{
       d += "L" + point[i].x + "," + point[i].y;
     }
 
-    return <path fill="#a8ceec" stroke="#333333" strokeOpacity="1" strokeWidth="2"  
+    return <path fill="#d5d5d5" stroke="#333333" strokeOpacity="1" strokeWidth="2"  
                  strokeLinejoin="round" strokeLinecap="round" d={d} />
   }
 }
