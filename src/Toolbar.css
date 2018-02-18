@@ -1,3 +1,8 @@
+.none {
+  padding: 0px;
+  margin: 0px;
+  height: 40px;
+}
 .Toolbar {
   height: 30px;
   margin: 5px;

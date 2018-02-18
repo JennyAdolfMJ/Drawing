@@ -25,7 +25,7 @@ class Toolbar extends Component {
     }
 
     return (
-      <div onClick={() => {
+      <div className="none" onClick={() => {
         this.setState({selected: !this.state.selected}); 
         this.props.selectionChanged(!this.state.selected);
         }}>
