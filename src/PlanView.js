@@ -49,6 +49,9 @@ class PlanView extends Component {
     var viewBox = this.state.viewBox;
     var factor = event.deltaY > 0 ? 0.01 : -0.01;
 
+    var point = Util.convertCoordinate(event, this.state.viewBox);
+    viewBox.x += (viewBox.x - point.x) * factor;
+    viewBox.y += (viewBox.y - point.y) * factor;
     viewBox.w *= 1 + factor;
     viewBox.h *= 1 + factor;
 
