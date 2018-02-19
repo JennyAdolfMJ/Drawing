@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Util from './Util';
 
 var OFFSET = 16;
 
 class Wall extends Component{
   render() {
-    var start = this.props.start;
-    var end = this.props.end;
-    var length = Math.sqrt(Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2));
-    var deltaX = OFFSET * (end.y - start.y) / length;
-    var deltaY = OFFSET * (end.x - start.x) / length;
+    var line = [this.props.start, this.props.end];
+    var length = Util.getDistance(line);
+    var deltaX = OFFSET * (line[1].y - line[0].y) / length;
+    var deltaY = OFFSET * (line[1].x - line[0].x) / length;
     var point = [];
 
-    point.push({x: start.x - deltaX, y: start.y + deltaY});
-    point.push({x: start.x + deltaX, y: start.y - deltaY});
-    point.push({x: end.x + deltaX, y: end.y - deltaY});
-    point.push({x: end.x - deltaX, y: end.y + deltaY});
+    point.push({x: line[0].x - deltaX, y: line[0].y + deltaY});
+    point.push({x: line[0].x + deltaX, y: line[0].y - deltaY});
+    point.push({x: line[1].x + deltaX, y: line[1].y - deltaY});
+    point.push({x: line[1].x - deltaX, y: line[1].y + deltaY});
 
     var d = "M" + point[3].x + "," + point[3].y;
     for(var i=0; i<4; i++)
