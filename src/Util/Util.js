@@ -34,16 +34,16 @@ class Util
     return this.cross(p1,p2,p1,p3)
   }
 
-  static inter_(p1, p2, p3, p4)
+  static interPoint(p1, p2, p3, p4)
   {
     var s1 = Math.abs(this.area(p1,p2,p3)); 
     var s2 = Math.abs(this.area(p1,p2,p4));  
     return new Point((p4.x*s1+p3.x*s2)/(s1+s2),(p4.y*s1+p3.y*s2)/(s1+s2));  
   }
 
-  static inter(line1, line2)
+  static interLine(line1, line2)
   {
-    return this.inter_(line1.points[0], line1.points[1], line2.points[0], line2.points[1]);
+    return this.interPoint(line1.points[0], line1.points[1], line2.points[0], line2.points[1]);
   }
 };
 

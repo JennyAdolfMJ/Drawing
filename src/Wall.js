@@ -2,24 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Line} from './Model/Point';
 
-var OFFSET = 16;
-
 class Wall extends Component{
   render() {
-    var line = this.props.line;
-    var deltaX = OFFSET * (line.points[1].y - line.points[0].y) / line.length;
-    var deltaY = OFFSET * (line.points[1].x - line.points[0].x) / line.length;
-    var point = [];
+    var vertices = this.props.vertices;
 
-    point.push({x: line.points[0].x - deltaX, y: line.points[0].y + deltaY});
-    point.push({x: line.points[0].x + deltaX, y: line.points[0].y - deltaY});
-    point.push({x: line.points[1].x + deltaX, y: line.points[1].y - deltaY});
-    point.push({x: line.points[1].x - deltaX, y: line.points[1].y + deltaY});
-
-    var d = "M" + point[3].x + "," + point[3].y;
-    for(var i=0; i<4; i++)
+    var d = "M" + vertices[1][1].toString();
+    for(var i=0; i<2; i++)
     {
-      d += "L" + point[i].x + "," + point[i].y;
+      for(var j=0; j<2; j++)
+      {
+        d += "L" + vertices[i][j].toString();
+      }
     }
 
     return <path fill="#d5d5d5" stroke="#333333" strokeOpacity="1" strokeWidth="2"  
@@ -33,10 +26,10 @@ Wall.propTypes = {
 
 class WallList extends Component{
   render() {
-    if (this.props.walls.length > 0) {
+    if (this.props.vertices.length > 0) {
       return (
         <g strokeWidth="1">
-          {this.props.walls.map((wall, index) => (<Wall key={index} line={wall} />))}
+          {this.props.vertices.map((wall, index) => (<Wall key={index} vertices={wall} />))}
         </g>
       )
     }

@@ -5,6 +5,11 @@ class Point
     this.x = x;
     this.y = y;
   }
+
+  toString()
+  {
+    return this.x + "," + this.y;
+  }
   
   static Add(p1, p2)
   {
@@ -14,6 +19,11 @@ class Point
   static Minus(p1, p2)
   {
     return new Point(p1.x-p2.x, p1.y-p2.y);
+  }
+
+  static Multi(point, factor)
+  {
+    return new Point(point.x*factor, point.y*factor);
   }
 }
 
@@ -29,11 +39,12 @@ class Line
     return Math.sqrt(Math.pow(this.points[0].x - this.points[1].x, 2) + Math.pow(this.points[0].y - this.points[1].y, 2));
   }
 
-  extend(index, length)
+  extend(index, offset)
   {
+    var length = this.length;
     var delta = Point.Minus(this.points[1-index], this.points[index]);
-    this.points[index].x -= delta.x / this.length * length;
-    this.points[index].y -= delta.y / this.length * length;
+    this.points[index].x -= delta.x / length * offset;
+    this.points[index].y -= delta.y / length * offset;
   }
 }
 
