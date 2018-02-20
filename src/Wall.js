@@ -6,7 +6,7 @@ var OFFSET = 16;
 
 class Wall extends Component{
   render() {
-    var line = [this.props.start, this.props.end];
+    var line = this.props.line;
     var length = Util.getDistance(line);
     var deltaX = OFFSET * (line[1].y - line[0].y) / length;
     var deltaY = OFFSET * (line[1].x - line[0].x) / length;
@@ -29,8 +29,9 @@ class Wall extends Component{
 }
 
 Wall.propTypes = {
-  start: PropTypes.object.isRequired,
-  end: PropTypes.object.isRequired
+  line: PropTypes.arrayOf(
+    PropTypes.object
+  ).isRequired,
 }
 
 class WallList extends Component{
@@ -38,7 +39,7 @@ class WallList extends Component{
     if (this.props.walls.length > 0) {
       return (
         <g strokeWidth="1">
-          {this.props.walls.map((wall, index) => (<Wall key={index} start={wall.start} end={wall.end} />))}
+          {this.props.walls.map((wall, index) => (<Wall key={index} line={wall} />))}
         </g>
       )
     }

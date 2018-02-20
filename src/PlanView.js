@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import WallList from './Wall';
 import Util from './Util';
+import WallManager from './WallManager';
 
 class PlanView extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class PlanView extends Component {
     this.state = {
       lastEvent: null,
       holding : false,
-      walls : [],
+      walls : WallManager.GetInstance().walls,
       viewBox : {x: -width/2, y: -height/2, w: width, h: height}};
   }
 
@@ -42,6 +43,19 @@ class PlanView extends Component {
 
   handleMouseUp(event) {
     this.setState({holding: false});
+    
+    switch(this.props.operation)
+    {
+      case Util.Operation.Wall:
+      {
+        var walls = this.state.walls;
+
+        WallManager.GetInstance().addWall(walls[walls.length-1]);
+        this.setState({walls: WallManager.GetInstance().walls});
+        break;
+      }
+      default:
+    }
   }
 
   handleWheel(event) {
@@ -64,13 +78,13 @@ class PlanView extends Component {
 
     if(this.state.lastEvent != null) {
       var sp = Util.convertCoordinate(this.state.lastEvent, this.state.viewBox);
-      var wall = {start: sp, end:ep};
+      var wall = [sp, ep];
       walls.push(wall);
       this.setState({lastEvent: null});
     }
     else
     {
-      walls[walls.length-1].end = ep;
+      walls[walls.length-1][1] = ep;
     }
 
     this.setState({walls: walls});

@@ -43,7 +43,7 @@ class Util
 
   static inter(line1, line2)
   {
-    return this.inter_(line1.points[0], line1.points[1], line2.points[0], line2.points[1]);
+    return this.inter_(line1[0], line1[1], line2[0], line2[1]);
   }
 };
 
