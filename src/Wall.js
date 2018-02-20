@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Util from './Util';
+import {Line} from './Model/Point';
 
 var OFFSET = 16;
 
 class Wall extends Component{
   render() {
     var line = this.props.line;
-    var length = Util.getDistance(line);
-    var deltaX = OFFSET * (line[1].y - line[0].y) / length;
-    var deltaY = OFFSET * (line[1].x - line[0].x) / length;
+    var deltaX = OFFSET * (line.points[1].y - line.points[0].y) / line.length;
+    var deltaY = OFFSET * (line.points[1].x - line.points[0].x) / line.length;
     var point = [];
 
-    point.push({x: line[0].x - deltaX, y: line[0].y + deltaY});
-    point.push({x: line[0].x + deltaX, y: line[0].y - deltaY});
-    point.push({x: line[1].x + deltaX, y: line[1].y - deltaY});
-    point.push({x: line[1].x - deltaX, y: line[1].y + deltaY});
+    point.push({x: line.points[0].x - deltaX, y: line.points[0].y + deltaY});
+    point.push({x: line.points[0].x + deltaX, y: line.points[0].y - deltaY});
+    point.push({x: line.points[1].x + deltaX, y: line.points[1].y - deltaY});
+    point.push({x: line.points[1].x - deltaX, y: line.points[1].y + deltaY});
 
     var d = "M" + point[3].x + "," + point[3].y;
     for(var i=0; i<4; i++)
@@ -29,9 +28,7 @@ class Wall extends Component{
 }
 
 Wall.propTypes = {
-  line: PropTypes.arrayOf(
-    PropTypes.object
-  ).isRequired,
+  line: PropTypes.objectOf(Line).isRequired,
 }
 
 class WallList extends Component{

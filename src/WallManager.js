@@ -1,7 +1,7 @@
 import Util from './Util';
 
 var POWER_OFFSET = 100;
-var OFFSET = 10;
+//var OFFSET = 10;
 
 class WallManager {
   constructor()
@@ -38,7 +38,7 @@ class WallManager {
 
         for (var k=0; k<2; k++)
         {
-          if (Util.getDistance([line[i], this.walls[j][k]], true) < POWER_ERROR)
+          if (Util.getDistance([line.points[i], this.walls[j].points[k]], true) < POWER_OFFSET)
           {
             this.walls[j][k] = Util.inter(line, this.walls[j]);
             line[i] = this.walls[j][k];

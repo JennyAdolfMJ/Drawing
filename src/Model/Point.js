@@ -51,6 +51,5 @@ class Walls
 
 }
 
-export default Point
-export {Walls}
+export {Point, Line};
 

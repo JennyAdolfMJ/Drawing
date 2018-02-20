@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import WallList from './Wall';
 import Util from './Util';
 import WallManager from './WallManager';
+import {Line} from './Model/Point';
 
 class PlanView extends Component {
   constructor(props) {
@@ -78,13 +79,13 @@ class PlanView extends Component {
 
     if(this.state.lastEvent != null) {
       var sp = Util.convertCoordinate(this.state.lastEvent, this.state.viewBox);
-      var wall = [sp, ep];
+      var wall = new Line(sp, ep);
       walls.push(wall);
       this.setState({lastEvent: null});
     }
     else
     {
-      walls[walls.length-1][1] = ep;
+      walls[walls.length-1].points[1] = ep;
     }
 
     this.setState({walls: walls});
