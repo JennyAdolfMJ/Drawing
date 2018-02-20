@@ -1,7 +1,7 @@
-import Util from './Util';
+import Util from './../Util/Util';
 
 var POWER_OFFSET = 100;
-//var OFFSET = 10;
+var OFFSET = 10;
 
 class WallManager {
   constructor()
@@ -40,8 +40,10 @@ class WallManager {
         {
           if (Util.getDistance([line.points[i], this.walls[j].points[k]], true) < POWER_OFFSET)
           {
-            this.walls[j][k] = Util.inter(line, this.walls[j]);
-            line[i] = this.walls[j][k];
+            line.extend(i, OFFSET);
+            this.walls[j].extend(k, OFFSET);
+            this.walls[j].points[k] = Util.inter(line, this.walls[j]);
+            line.points[i] = this.walls[j].points[k];
             merged = true;
             break;
           }

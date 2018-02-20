@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import WallList from './Wall';
-import Util from './Util';
-import WallManager from './WallManager';
+import Util from './Util/Util';
+import WallManager from './Controller/WallManager';
 import {Line} from './Model/Point';
 
 class PlanView extends Component {

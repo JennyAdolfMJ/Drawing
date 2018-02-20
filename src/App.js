@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import PlanView from './PlanView';
 import Toolbar from './Toolbar';
-import Util from './Util';
+import Util from './Util/Util';
 
 class App extends Component {
   constructor(props) {
