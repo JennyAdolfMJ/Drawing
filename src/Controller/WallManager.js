@@ -83,26 +83,44 @@ class WallManager {
   
   mergeVertex(wallIdx1, pointIdx1, wallIdx2, pointIdx2)
   { 
-    this.updateVertex(wallIdx1);
-    this.updateVertex(wallIdx2);
+    this.updateVertex(wallIdx1, pointIdx1);
+    this.updateVertex(wallIdx2, pointIdx2);
 
     if (pointIdx1 !== pointIdx2)
     {
       var line1 = new Line(this.vertices[wallIdx1][0][1], this.vertices[wallIdx1][1][0]);
       var line2 = new Line(this.vertices[wallIdx2][0][1], this.vertices[wallIdx2][1][0]);
-      line1.extend(0, OFFSET);
-      line2.extend(1, OFFSET);
+      line1.extend(pointIdx1, OFFSET);
+      line2.extend(1-pointIdx1, OFFSET);
       var inter = Util.interLine(line1, line2);
-      this.vertices[wallIdx1][pointIdx1][1] = inter;
-      this.vertices[wallIdx2][pointIdx2][0] = inter;
+      this.vertices[wallIdx1][pointIdx1][1-pointIdx1] = inter;
+      this.vertices[wallIdx2][pointIdx2][pointIdx1] = inter;
 
       line1 = new Line(this.vertices[wallIdx1][0][0], this.vertices[wallIdx1][1][1]);
       line2 = new Line(this.vertices[wallIdx2][0][0], this.vertices[wallIdx2][1][1]);
-      line1.extend(0, OFFSET);
-      line2.extend(1, OFFSET);
+      line1.extend(pointIdx1, OFFSET);
+      line2.extend(1-pointIdx1, OFFSET);
       inter = Util.interLine(line1, line2);
-      this.vertices[wallIdx1][pointIdx1][0] = inter;
-      this.vertices[wallIdx2][pointIdx2][1] = inter;
+      this.vertices[wallIdx1][pointIdx1][pointIdx1] = inter;
+      this.vertices[wallIdx2][pointIdx2][1-pointIdx1] = inter;
+    }
+    else
+    {
+      var line1 = new Line(this.vertices[wallIdx1][0][1], this.vertices[wallIdx1][1][0]);
+      var line2 = new Line(this.vertices[wallIdx2][1][1], this.vertices[wallIdx2][0][0]);
+      line1.extend(pointIdx1, OFFSET);
+      line2.extend(1-pointIdx1, OFFSET);
+      var inter = Util.interLine(line1, line2);
+      this.vertices[wallIdx1][pointIdx1][1-pointIdx1] = inter;
+      this.vertices[wallIdx2][pointIdx2][pointIdx1] = inter;
+
+      line1 = new Line(this.vertices[wallIdx1][1][1], this.vertices[wallIdx1][0][0]);
+      line2 = new Line(this.vertices[wallIdx2][0][1], this.vertices[wallIdx2][1][0]);
+      line1.extend(1-pointIdx1, OFFSET);
+      line2.extend(pointIdx1, OFFSET);
+      inter = Util.interLine(line1, line2);
+      this.vertices[wallIdx1][pointIdx1][pointIdx1] = inter;
+      this.vertices[wallIdx2][pointIdx2][1-pointIdx1] = inter;
     }
 
   }
