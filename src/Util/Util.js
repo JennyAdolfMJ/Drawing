@@ -14,7 +14,7 @@ class Util
     var x = event.clientX / window.innerWidth * viewBox.w + viewBox.x;
     var y = (event.clientY - 40) / (window.innerHeight - 40) * viewBox.h + viewBox.y;
       
-    return {x: x, y: y};
+    return new Point(x, y);
   }
 
   static getDistance(arr, square = false)

@@ -4,6 +4,18 @@ class Point
   {
     this.x = x;
     this.y = y;
+    this.refs = [];
+  }
+
+  set(p)
+  {
+    this.x = p.x;
+    this.y = p.y;
+  }
+
+  addRef(lIndex, pIndex)
+  {
+    this.refs.push({lineIdx: lIndex, pointIdx: pIndex});
   }
 
   toString()
@@ -48,31 +60,14 @@ class Line
   }
 }
 
-class Walls
+class Wall
 {
-  constructor()
+  constructor(sIndex, eIndex, index)
   {
-    this.walls = [];
-    this.connections = [];
+    this.vertices = [sIndex, eIndex];
+    this.index = index;
   }
-
-  add(p1, p2)
-  {
-    this.walls.push(new Line(p1, p2));
-  }
-
-  addLine(line)
-  {
-    this.walls.push(line);
-  }
-
-  connect(p1, p2)
-  {
-    this.connections[p1].push(p2);
-    this.connections[p2].push(p1);
-  }
-
 }
 
-export {Point, Line};
+export {Point, Line, Wall};
 

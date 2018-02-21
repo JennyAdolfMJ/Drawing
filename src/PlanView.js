@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import WallList from './Wall';
 import Util from './Util/Util';
 import WallManager from './Controller/WallManager';
-import {Line} from './Model/Point';
 
 class PlanView extends Component {
   constructor(props) {
@@ -19,7 +18,7 @@ class PlanView extends Component {
     this.state = {
       lastEvent: null,
       holding : false,
-      vertices : WallManager.GetInstance().vertices,
+      borders : WallManager.GetInstance().borders,
       viewBox : {x: -width/2, y: -height/2, w: width, h: height}};
   }
 
@@ -49,10 +48,13 @@ class PlanView extends Component {
     {
       case Util.Operation.Wall:
       {
+        if(this.state.lastEvent != null)
+          return;
+
         var walls = WallManager.GetInstance().walls;
 
         WallManager.GetInstance().mergePoint(walls[walls.length-1]);
-        this.setState({vertices: WallManager.GetInstance().vertices});
+        this.setState({borders: WallManager.GetInstance().borders});
         break;
       }
       default:
@@ -74,22 +76,21 @@ class PlanView extends Component {
 
   renderWall(event)
   {
-    var walls = WallManager.GetInstance().walls;
+    var points = WallManager.GetInstance().points;
     var ep = Util.convertCoordinate(event, this.state.viewBox);
 
     if(this.state.lastEvent != null) {
       var sp = Util.convertCoordinate(this.state.lastEvent, this.state.viewBox);
-      var wall = new Line(sp, ep);
-      WallManager.GetInstance().addWall(wall);
+      WallManager.GetInstance().addWall(sp, ep);
       this.setState({lastEvent: null});
     }
     else
     {
-      walls[walls.length-1].points[1] = ep;
-      WallManager.GetInstance().updateVertex(walls.length-1, -1);
+      points[points.length-1].set(ep);
+      WallManager.GetInstance().updateBorder(WallManager.GetInstance().walls.length-1, -1);
     }
 
-    this.setState({vertices: WallManager.GetInstance().vertices});
+    this.setState({borders: WallManager.GetInstance().borders});
   }
 
   renderViewBox(event)
@@ -123,7 +124,7 @@ class PlanView extends Component {
               <path fill="none" stroke="#d5d5d5" d="M-6835,-342L6835,-342M-6835,342L6835,342M-6835,-683L6835,-683M-6835,684L6835,684M-6835,-1025L6835,-1025M-6835,1025L6835,1025M-6835,-1367L6835,-1367M-6835,1367L6835,1367M-6835,-1709L6835,-1709M-6835,1709L6835,1709M-6835,-2050L6835,-2050M-6835,2051L6835,2051M-6835,-2392L6835,-2392M-6835,2392L6835,2392M-6835,-2734L6835,-2734M-6835,2734L6835,2734M-6835,-3076L6835,-3076M-6835,3076L6835,3076M-6835,-3417L6835,-3417M-6835,3417L6835,3417M-6835,-3759L6835,-3759M-6835,3759L6835,3759M-6835,-4101L6835,-4101M-6835,4101L6835,4101M-6835,-4443L6835,-4443M-6835,4443L6835,4443M-6835,-4784L6835,-4784M-6835,4785L6835,4785M-6835,-5126L6835,-5126M-6835,5126L6835,5126M-6835,-5468L6835,-5468M-6835,5468L6835,5468M-6835,-5810L6835,-5810M-6835,5810L6835,5810M-6835,-6151L6835,-6151M-6835,6151L6835,6151M-6835,-6493L6835,-6493M-6835,6493L6835,6493M-6835,-6835L6835,-6835M-6835,6835L6835,6835M342,6835L342,-6835M-342,6835L-342,-6835M684,6835L684,-6835M-683,6835L-683,-6835M1025,6835L1025,-6835M-1025,6835L-1025,-6835M1367,6835L1367,-6835M-1367,6835L-1367,-6835M1709,6835L1709,-6835M-1709,6835L-1709,-6835M2051,6835L2051,-6835M-2050,6835L-2050,-6835M2392,6835L2392,-6835M-2392,6835L-2392,-6835M2734,6835L2734,-6835M-2734,6835L-2734,-6835M3076,6835L3076,-6835M-3076,6835L-3076,-6835M3417,6835L3417,-6835M-3417,6835L-3417,-6835M3759,6835L3759,-6835M-3759,6835L-3759,-6835M4101,6835L4101,-6835M-4101,6835L-4101,-6835M4443,6835L4443,-6835M-4443,6835L-4443,-6835M4785,6835L4785,-6835M-4784,6835L-4784,-6835M5126,6835L5126,-6835M-5126,6835L-5126,-6835M5468,6835L5468,-6835M-5468,6835L-5468,-6835M5810,6835L5810,-6835M-5810,6835L-5810,-6835M6151,6835L6151,-6835M-6151,6835L-6151,-6835M6493,6835L6493,-6835M-6493,6835L-6493,-6835M6835,6835L6835,-6835M-6835,6835L-6835,-6835Z" strokeWidth="2" className="thin-line"></path>
               <path fill="none" stroke="#d5d5d5" d="M-6835,0L6835,0M-6835,0L6835,0M0,6835L0,-6835M0,6835L0,-6835Z" strokeWidth="4" className="thin-line"></path>
             </g>
-            <WallList vertices={this.state.vertices}/>
+            <WallList borders={this.state.borders}/>
         </svg>
       </div>
     );

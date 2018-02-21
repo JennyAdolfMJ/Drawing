@@ -4,14 +4,14 @@ import {Line} from './Model/Point';
 
 class Wall extends Component{
   render() {
-    var vertices = this.props.vertices;
+    var borders = this.props.borders;
 
-    var d = "M" + vertices[1][1].toString();
+    var d = "M" + borders[1][1].toString();
     for(var i=0; i<2; i++)
     {
       for(var j=0; j<2; j++)
       {
-        d += "L" + vertices[i][j].toString();
+        d += "L" + borders[i][j].toString();
       }
     }
 
@@ -26,10 +26,10 @@ Wall.propTypes = {
 
 class WallList extends Component{
   render() {
-    if (this.props.vertices.length > 0) {
+    if (this.props.borders.length > 0) {
       return (
         <g strokeWidth="1">
-          {this.props.vertices.map((wall, index) => (<Wall key={index} vertices={wall} />))}
+          {this.props.borders.map((wall, index) => (<Wall key={index} borders={wall} />))}
         </g>
       )
     }
