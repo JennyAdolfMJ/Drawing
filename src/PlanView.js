@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import WallList from './Wall';
+import FurnitureList from './Furniture';
 import Util from './Util/Util';
+import AppManager from './Controller/AppManager';
 import WallManager from './Controller/WallManager';
 
 class PlanView extends Component {
@@ -17,9 +19,10 @@ class PlanView extends Component {
     
     this.state = {
       lastEvent: null,
-      holding : false,
-      borders : WallManager.GetInstance().borders,
-      viewBox : {x: -width/2, y: -height/2, w: width, h: height}};
+      holding: false,
+      borders: WallManager.GetInstance().borders,
+      furnitures: [],
+      viewBox: {x: -width/2, y: -height/2, w: width, h: height}};
   }
 
   handleMouseDown(event) {
@@ -28,15 +31,17 @@ class PlanView extends Component {
   }
 
   handleMouseMove(event) {
-    if(!this.state.holding)
-      return;
 
-    switch(this.props.operation)
+    switch(AppManager.GetInstance().operation)
     {
-      case Util.Operation.None:
-        this.renderViewBox(event); break;
-      case Util.Operation.Wall:
-        this.renderWall(event); break;
+      case AppManager.Operation.None:
+        if(this.state.holding)
+          this.renderViewBox(event); break;
+      case AppManager.Operation.Wall:
+        if(this.state.holding)
+          this.renderWall(event); break;
+      case AppManager.Operation.Furniture:
+        this.renderFurniture(event); break;
       default:
     }
   }
@@ -44,9 +49,9 @@ class PlanView extends Component {
   handleMouseUp(event) {
     this.setState({holding: false});
     
-    switch(this.props.operation)
+    switch(AppManager.GetInstance().operation)
     {
-      case Util.Operation.Wall:
+      case AppManager.Operation.Wall:
       {
         if(this.state.lastEvent != null)
           return;
@@ -55,6 +60,13 @@ class PlanView extends Component {
 
         WallManager.GetInstance().mergePoint(walls[walls.length-1]);
         this.setState({borders: WallManager.GetInstance().borders});
+        break;
+      }
+      case AppManager.Operation.Furniture:
+      {
+        this.setState({lastEvent: null});
+        AppManager.GetInstance().operation = AppManager.Operation.None;
+        AppManager.GetInstance().toolbar.setState({selTool: AppManager.GetInstance().operation});
         break;
       }
       default:
@@ -93,6 +105,22 @@ class PlanView extends Component {
     this.setState({borders: WallManager.GetInstance().borders});
   }
 
+  renderFurniture(event)
+  {
+    var furnitures = this.state.furnitures;
+    var point = Util.convertCoordinate(event, this.state.viewBox);
+
+    if(this.state.lastEvent == null) {
+      furnitures.push(point)
+      this.setState({lastEvent: event});
+    }
+    else {
+      furnitures[furnitures.length-1].set(point);
+    }
+
+    this.setState({furnitures: furnitures});
+  }
+
   renderViewBox(event)
   {
     var sp = Util.convertCoordinate(this.state.lastEvent, this.state.viewBox);
@@ -125,6 +153,7 @@ class PlanView extends Component {
               <path fill="none" stroke="#d5d5d5" d="M-6835,0L6835,0M-6835,0L6835,0M0,6835L0,-6835M0,6835L0,-6835Z" strokeWidth="4" className="thin-line"></path>
             </g>
             <WallList borders={this.state.borders}/>
+            <FurnitureList furnitures={this.state.furnitures} />
         </svg>
       </div>
     );

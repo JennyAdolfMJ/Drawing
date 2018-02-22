@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
+import ReactSVG from 'react-svg';
 import './Toolbar.css';
+import AppManager from './Controller/AppManager';
 import wall from './Resource/wall.svg';
 import furniture from './Resource/furniture.svg';
-import ReactSVG from 'react-svg';
-
-var tool_selected =  {
-	stroke: "#a8ceec",
-	fill: "#ffffff",
-	height: "30px",
-	margin: "5px"
-}
 
 class Toolbar extends Component {
   constructor(props) {
     super(props);
 
-		this.state = {selTool: ""};
+		AppManager.GetInstance().toolbar = this;
+		this.state = {selTool: AppManager.GetInstance().operation};
 	}
 
 	callback(svg)
@@ -29,14 +24,14 @@ class Toolbar extends Component {
 	{
 		if(this.state.selTool === event.currentTarget.id)
 		{
-			this.setState({selTool: ""});
+			AppManager.GetInstance().operation = AppManager.Operation.None;
 		}
 		else
 		{
-			this.setState({selTool: event.currentTarget.id});
+			AppManager.GetInstance().operation = event.currentTarget.id;
 		}
 
-		this.props.selectionChanged(this.state.selTool);
+		this.setState({selTool: AppManager.GetInstance().operation});
 	}
 
 	getClassName(id)
