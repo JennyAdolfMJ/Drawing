@@ -13,8 +13,8 @@ class App extends Component {
     this.state = {operation: Util.Operation.None};
   }
 
-  selectionChanged(selected){
-    var operation = selected ? Util.Operation.Wall : Util.Operation.None;
+  selectionChanged(selTool){
+    var operation = selTool === "wall" ? Util.Operation.Wall : Util.Operation.None;
     this.setState({operation: operation});
   }
 

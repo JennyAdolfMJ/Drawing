@@ -103,51 +103,59 @@ class WallManager {
   
   mergeBorder(point)
   {
-    for(var i=1; i<point.refs.length; i++)
+    for(var i=0; i<point.refs.length; i++)
     {
-      var wallIdx1 = point.refs[i-1].lineIdx;
-      var pointIdx1 = point.refs[i-1].pointIdx;
-      var wallIdx2 = point.refs[i].lineIdx;
-      var pointIdx2 = point.refs[i].pointIdx;
+      var wallIdx = point.refs[i].lineIdx;
+      var pointIdx = point.refs[i].pointIdx;
 
-      this.updateBorder(wallIdx1, pointIdx1);
-      this.updateBorder(wallIdx2, pointIdx2);
-  
-      if (pointIdx1 !== pointIdx2)
+      this.updateBorder(wallIdx, pointIdx);
+    }
+
+    for(var i=0; i<point.refs.length; i++)
+    {
+      for(var j=i+1; j<point.refs.length; j++)
       {
-        var line1 = new Line(this.borders[wallIdx1][0][1], this.borders[wallIdx1][1][0]);
-        var line2 = new Line(this.borders[wallIdx2][0][1], this.borders[wallIdx2][1][0]);
-        line1.extend(pointIdx1, OFFSET);
-        line2.extend(1-pointIdx1, OFFSET);
-        var inter = Util.interLine(line1, line2);
-        this.borders[wallIdx1][pointIdx1][1-pointIdx1] = inter;
-        this.borders[wallIdx2][pointIdx2][pointIdx1] = inter;
-  
-        line1 = new Line(this.borders[wallIdx1][0][0], this.borders[wallIdx1][1][1]);
-        line2 = new Line(this.borders[wallIdx2][0][0], this.borders[wallIdx2][1][1]);
-        line1.extend(pointIdx1, OFFSET);
-        line2.extend(1-pointIdx1, OFFSET);
-        inter = Util.interLine(line1, line2);
-        this.borders[wallIdx1][pointIdx1][pointIdx1] = inter;
-        this.borders[wallIdx2][pointIdx2][1-pointIdx1] = inter;
-      }
-      else
-      {
-        var line1 = new Line(this.borders[wallIdx1][0][1], this.borders[wallIdx1][1][0]);
-        var line2 = new Line(this.borders[wallIdx2][0][0], this.borders[wallIdx2][1][1]);
-        line1.extend(pointIdx1, OFFSET);
-        line2.extend(pointIdx1, OFFSET);
-        var inter = Util.interLine(line1, line2);
-        this.borders[wallIdx1][pointIdx1][1-pointIdx1] = inter;
-        this.borders[wallIdx2][pointIdx2][pointIdx1] = inter;
-  
-        line1 = new Line(this.borders[wallIdx1][0][0], this.borders[wallIdx1][1][1]);
-        line2 = new Line(this.borders[wallIdx2][0][1], this.borders[wallIdx2][1][0]);
-        line1.extend(pointIdx1, OFFSET);
-        line2.extend(pointIdx1, OFFSET);
-        inter = Util.interLine(line1, line2);
-        this.borders[wallIdx1][pointIdx1][pointIdx1] = inter;
-        this.borders[wallIdx2][pointIdx2][1-pointIdx1] = inter;
+        var wallIdx1 = point.refs[i].lineIdx;
+        var pointIdx1 = point.refs[i].pointIdx;
+        var wallIdx2 = point.refs[j].lineIdx;
+        var pointIdx2 = point.refs[j].pointIdx;
+    
+        if (pointIdx1 !== pointIdx2)
+        {
+          var line1 = new Line(this.borders[wallIdx1][0][1], this.borders[wallIdx1][1][0]);
+          var line2 = new Line(this.borders[wallIdx2][0][1], this.borders[wallIdx2][1][0]);
+          line1.extend(pointIdx1, OFFSET);
+          line2.extend(1-pointIdx1, OFFSET);
+          var inter = Util.interLine(line1, line2);
+          this.borders[wallIdx1][pointIdx1][1-pointIdx1] = inter;
+          this.borders[wallIdx2][pointIdx2][pointIdx1] = inter.copy();
+    
+          line1 = new Line(this.borders[wallIdx1][0][0], this.borders[wallIdx1][1][1]);
+          line2 = new Line(this.borders[wallIdx2][0][0], this.borders[wallIdx2][1][1]);
+          line1.extend(pointIdx1, OFFSET);
+          line2.extend(1-pointIdx1, OFFSET);
+          inter = Util.interLine(line1, line2);
+          this.borders[wallIdx1][pointIdx1][pointIdx1] = inter;
+          this.borders[wallIdx2][pointIdx2][1-pointIdx1] = inter.copy();
+        }
+        else
+        {
+          var line1 = new Line(this.borders[wallIdx1][0][1], this.borders[wallIdx1][1][0]);
+          var line2 = new Line(this.borders[wallIdx2][0][0], this.borders[wallIdx2][1][1]);
+          line1.extend(pointIdx1, OFFSET);
+          line2.extend(pointIdx1, OFFSET);
+          var inter = Util.interLine(line1, line2);
+          this.borders[wallIdx1][pointIdx1][1-pointIdx1] = inter;
+          this.borders[wallIdx2][pointIdx2][pointIdx1] = inter.copy();
+    
+          line1 = new Line(this.borders[wallIdx1][0][0], this.borders[wallIdx1][1][1]);
+          line2 = new Line(this.borders[wallIdx2][0][1], this.borders[wallIdx2][1][0]);
+          line1.extend(pointIdx1, OFFSET);
+          line2.extend(pointIdx1, OFFSET);
+          inter = Util.interLine(line1, line2);
+          this.borders[wallIdx1][pointIdx1][pointIdx1] = inter;
+          this.borders[wallIdx2][pointIdx2][1-pointIdx1] = inter.copy();
+        }
       }
     }
   }
