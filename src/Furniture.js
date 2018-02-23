@@ -5,9 +5,7 @@ class Furniture extends Component{
   render() {
     var furniture = this.props.furniture;
 
-    return <image x={furniture.x} y={furniture.y} width="81" xlinkHref={bed}
-    preserveAspectRatio="none"  stroke="#333333" stroke-width="0" 
-    transform="matrix(1,0,0,1,0,0)" opacity="1" pointer-events=""></image>
+    return <image x={furniture.x} y={furniture.y} width="81" xlinkHref={bed}></image>
   }
 }
 

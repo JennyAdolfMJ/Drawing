@@ -29,6 +29,11 @@ class WallManager {
   {
     sp.index = this.pointCur++;
     ep.index = this.pointCur++;
+
+    var index = this.findNearPoint(sp);
+    if(index>0)
+      sp.set(this.points[index]);
+    
     this.points.push(sp, ep);
     var wall = new Wall(sp.index, ep.index, this.wallCur++);
     sp.addRef(wall.index, 0);
@@ -54,6 +59,17 @@ class WallManager {
       line = new Line(this.borders[wallIdx][0][0], this.borders[wallIdx][1][1]);
     }
     return line;
+  }
+
+  findNearPoint(point)
+  {
+    for(var j=0; j < this.points.length; j++)
+    {
+      if (Util.getDistance([point, this.points[j]], true) < POWER_OFFSET)
+        return j;
+    }
+
+    return -1;
   }
 
   createBorder(wallIdx)
@@ -97,23 +113,23 @@ class WallManager {
       if (Util.getDistance([this.points[index], this.points[j]], true) < POWER_OFFSET)
         continue;
 
-      if (Math.abs(this.points[index].x - this.points[j].x) < WALL_THICK)
+      else if (Math.abs(this.points[index].x - this.points[j].x) < WALL_THICK)
       {
         this.points[index].x = this.points[j].x;
-        this.sublines.set(j+","+index, new Point(this.points[j].x, 0));
+        this.sublines.set(j+","+index+"x", new Point(this.points[j].x, 0));
       }
-      else if(this.sublines.has(j+","+index))
+      else if(this.sublines.has(j+","+index+"x"))
       {
-        this.sublines.delete(j+","+index);
+        this.sublines.delete(j+","+index+"x");
       }
       else if (Math.abs(this.points[index].y - this.points[j].y) < WALL_THICK)
       {
         this.points[index].y = this.points[j].y;
-        this.sublines.set(j+","+index, new Point(0, this.points[j].y));
+        this.sublines.set(j+","+index+"y", new Point(0, this.points[j].y));
       }
-      else if(this.sublines.has(j+","+index))
+      else if(this.sublines.has(j+","+index+"y"))
       {
-        this.sublines.delete(j+","+index);
+        this.sublines.delete(j+","+index+"y");
       }
     }
   }
