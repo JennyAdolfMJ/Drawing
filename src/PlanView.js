@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import WallList from './Wall';
 import FurnitureList from './Furniture';
+import SublineList from './Subline';
 import Util from './Util/Util';
 import AppManager from './Controller/AppManager';
 import WallManager from './Controller/WallManager';
@@ -22,6 +23,7 @@ class PlanView extends Component {
       holding: false,
       borders: WallManager.GetInstance().borders,
       furnitures: [],
+      sublines: WallManager.GetInstance().sublines,
       viewBox: {x: -width/2, y: -height/2, w: width, h: height}};
   }
 
@@ -31,7 +33,6 @@ class PlanView extends Component {
   }
 
   handleMouseMove(event) {
-
     switch(AppManager.GetInstance().operation)
     {
       case AppManager.Operation.None:
@@ -60,6 +61,8 @@ class PlanView extends Component {
 
         WallManager.GetInstance().mergePoint(walls[walls.length-1]);
         this.setState({borders: WallManager.GetInstance().borders});
+        WallManager.GetInstance().sublines.clear();
+        this.setState({sublines: WallManager.GetInstance().sublines});
         break;
       }
       case AppManager.Operation.Furniture:
@@ -99,10 +102,12 @@ class PlanView extends Component {
     else
     {
       points[points.length-1].set(ep);
+      WallManager.GetInstance().genSubline(points.length-1);
       WallManager.GetInstance().updateBorder(WallManager.GetInstance().walls.length-1, -1);
     }
 
     this.setState({borders: WallManager.GetInstance().borders});
+    this.setState({sublines: WallManager.GetInstance().sublines});
   }
 
   renderFurniture(event)
@@ -154,6 +159,7 @@ class PlanView extends Component {
             </g>
             <WallList borders={this.state.borders}/>
             <FurnitureList furnitures={this.state.furnitures} />
+            <SublineList sublines={this.state.sublines} viewBox={this.state.viewBox} />
         </svg>
       </div>
     );
