@@ -103,7 +103,7 @@ class PlanView extends Component {
     {
       points[points.length-1].set(ep);
       WallManager.GetInstance().genSubline(points.length-1);
-      WallManager.GetInstance().updateBorder(WallManager.GetInstance().walls.length-1, -1);
+      WallManager.GetInstance().updateBorder(WallManager.GetInstance().walls.length-1);
     }
 
     this.setState({borders: WallManager.GetInstance().borders});

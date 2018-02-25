@@ -1,8 +1,8 @@
 import Util from './../Util/Util';
 import { Point, Line, Wall } from '../Model/Point';
 
-var POWER_OFFSET = 100;
-var OFFSET = 16;
+var POWER_OFFSET = 256;
+var OFFSET = 100;
 
 class WallManager {
   constructor()
@@ -38,8 +38,9 @@ class WallManager {
     sp.addRef(wall.index, 0);
     ep.addRef(wall.index, 1);
     this.walls.push(wall);
+    this.borders.push([new Array(2), new Array(2)]);
 
-    this.createBorder(wall.index);
+    this.updateBorder(wall.index);
   }
 
   getLine(index)
@@ -71,20 +72,7 @@ class WallManager {
     return -1;
   }
 
-  createBorder(wallIdx)
-  {
-    var line = this.getLine(wallIdx);
-    var delta = Point.Multi(Point.Minus(line.points[1], line.points[0]), this.walls[wallIdx].getThickness() / line.length);
-    var point1 = [], point2 = [];
-
-    point1.push(new Point(line.points[0].x - delta.y, line.points[0].y + delta.x));
-    point1.push(new Point(line.points[0].x + delta.y, line.points[0].y - delta.x));
-    point2.push(new Point(line.points[1].x + delta.y, line.points[1].y - delta.x));
-    point2.push(new Point(line.points[1].x - delta.y, line.points[1].y + delta.x));
-    this.borders.push([point1, point2]);
-  }
-
-  updateBorder(wallIdx, pointIdx)
+  updateBorder(wallIdx, pointIdx = -1)
   {
     var line = this.getLine(wallIdx);
     var delta = Point.Multi(Point.Minus(line.points[1], line.points[0]), this.walls[wallIdx].getThickness() / line.length);
@@ -170,7 +158,7 @@ class WallManager {
       this.updateBorder(wallIdx, pointIdx);
     }
 
-    for(var i=0; i<point.refs.length; i++)
+    for(i=0; i<point.refs.length; i++)
     {
       for(var j=i+1; j<point.refs.length; j++)
       {

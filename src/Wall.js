@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Line} from './Model/Point';
 
 class Wall extends Component{
   render() {
@@ -21,7 +20,7 @@ class Wall extends Component{
 }
 
 Wall.propTypes = {
-  line: PropTypes.objectOf(Line).isRequired,
+  borders: PropTypes.objectOf(Array).isRequired,
 }
 
 class WallList extends Component{
