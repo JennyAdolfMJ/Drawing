@@ -42,7 +42,7 @@ class Toolbar extends Component {
   render() {
 
     return (
-      <div className="none">
+      <div className="toolbar">
 				<ReactSVG path={wall} className={this.getClassName("wall")} wrapperClassName="none" 
 									callback={(svg) => this.callback(svg)} />
 				<ReactSVG path={furniture} className={this.getClassName("furniture")} wrapperClassName="none" 

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import bed from './Resource/bed.png';
+import bed from './Resource/Top.png';
+import Util from './Util/Util';
 
 class Furniture extends Component{
   render() {
     var furniture = this.props.furniture;
 
-    return <image x={furniture.x} y={furniture.y} width="81" xlinkHref={bed}></image>
+    return <image x={furniture.x} y={furniture.y} width={Util.convertLength(2416)} xlinkHref={bed}></image>
   }
 }
 

@@ -15,8 +15,8 @@ class PlanView extends Component {
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
 
-    var width = window.innerWidth;
-    var height = window.innerHeight - 40;
+    var width = 2000;
+    var ratio = (window.innerHeight - 40) / window.innerWidth;
     
     this.state = {
       lastEvent: null,
@@ -24,7 +24,7 @@ class PlanView extends Component {
       borders: WallManager.GetInstance().borders,
       furnitures: [],
       sublines: WallManager.GetInstance().sublines,
-      viewBox: {x: -width/2, y: -height/2, w: width, h: height}};
+      viewBox: {x: -width/2, y: -width*ratio/2, w: width, h: width * ratio}};
   }
 
   handleMouseDown(event) {

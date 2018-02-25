@@ -1,3 +1,8 @@
+.toolbar {
+  box-shadow: 0 0 2px 0 rgba(52, 58, 64, .5);
+  background-color: #fafafa;
+  border-radius: 0 0 4px 4px;
+}
 .none {
   padding: 0px;
   margin: 0px;

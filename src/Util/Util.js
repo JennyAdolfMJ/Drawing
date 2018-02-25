@@ -9,6 +9,10 @@ class Util
     return new Point(x, y);
   }
 
+  static convertLength(length) {
+    return length * 68 / 500;
+  }
+
   static getDistance(arr, square = false)
   {
     var length = Math.pow(arr[0].x - arr[1].x, 2) + Math.pow(arr[0].y - arr[1].y, 2);

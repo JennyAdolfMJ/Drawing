@@ -1,3 +1,5 @@
+import Util from "../Util/Util";
+
 class Point 
 {
   constructor(x, y)
@@ -69,8 +71,14 @@ class Wall
 {
   constructor(sIndex, eIndex, index)
   {
+    this.thickness = 240;
     this.vertices = [sIndex, eIndex];
     this.index = index;
+  }
+
+  getThickness()
+  {
+    return Util.convertLength(this.thickness / 2);
   }
 }
 

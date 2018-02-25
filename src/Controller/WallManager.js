@@ -2,8 +2,7 @@ import Util from './../Util/Util';
 import { Point, Line, Wall } from '../Model/Point';
 
 var POWER_OFFSET = 100;
-var OFFSET = 100;
-var WALL_THICK = 16;
+var OFFSET = 16;
 
 class WallManager {
   constructor()
@@ -75,7 +74,7 @@ class WallManager {
   createBorder(wallIdx)
   {
     var line = this.getLine(wallIdx);
-    var delta = Point.Multi(Point.Minus(line.points[1], line.points[0]), WALL_THICK / line.length);
+    var delta = Point.Multi(Point.Minus(line.points[1], line.points[0]), this.walls[wallIdx].getThickness() / line.length);
     var point1 = [], point2 = [];
 
     point1.push(new Point(line.points[0].x - delta.y, line.points[0].y + delta.x));
@@ -88,7 +87,7 @@ class WallManager {
   updateBorder(wallIdx, pointIdx)
   {
     var line = this.getLine(wallIdx);
-    var delta = Point.Multi(Point.Minus(line.points[1], line.points[0]), WALL_THICK / line.length);
+    var delta = Point.Multi(Point.Minus(line.points[1], line.points[0]), this.walls[wallIdx].getThickness() / line.length);
 
     if (pointIdx === 0 || pointIdx === -1)
     {
@@ -113,7 +112,7 @@ class WallManager {
       if (Util.getDistance([this.points[index], this.points[j]], true) < POWER_OFFSET)
         continue;
 
-      else if (Math.abs(this.points[index].x - this.points[j].x) < WALL_THICK)
+      else if (Math.abs(this.points[index].x - this.points[j].x) < OFFSET)
       {
         this.points[index].x = this.points[j].x;
         this.sublines.set(j+","+index+"x", new Point(this.points[j].x, 0));
@@ -122,7 +121,7 @@ class WallManager {
       {
         this.sublines.delete(j+","+index+"x");
       }
-      else if (Math.abs(this.points[index].y - this.points[j].y) < WALL_THICK)
+      else if (Math.abs(this.points[index].y - this.points[j].y) < OFFSET)
       {
         this.points[index].y = this.points[j].y;
         this.sublines.set(j+","+index+"y", new Point(0, this.points[j].y));
